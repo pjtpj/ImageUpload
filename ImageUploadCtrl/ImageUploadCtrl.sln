@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageUploadCtrl", "ImageUploadCtrl.vcproj", "{0D88A811-1336-49D1-85AD-95938ADB50B5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BA3730D0-492A-4B37-85A4-29D50F3D000F} = {BA3730D0-492A-4B37-85A4-29D50F3D000F}
+		{7228F04B-F785-4074-BBC1-FC2C78F8AF2A} = {7228F04B-F785-4074-BBC1-FC2C78F8AF2A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageUploadCtrlPS", "ImageUploadCtrlPS.vcproj", "{1BE00032-4E7B-4D98-967C-274DCBC94006}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0D88A811-1336-49D1-85AD-95938ADB50B5} = {0D88A811-1336-49D1-85AD-95938ADB50B5}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ppc", "..\ppc\ppc.vcproj", "{BA3730D0-492A-4B37-85A4-29D50F3D000F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "..\CxImage\current-version\zlib\zlib.vcproj", "{1ED27CB1-520D-401F-8242-E03E171ED702}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "png", "..\CxImage\current-version\png\png.vcproj", "{E6FE5B4E-A52F-4FC1-A7EB-9F1D76211B5A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1ED27CB1-520D-401F-8242-E03E171ED702} = {1ED27CB1-520D-401F-8242-E03E171ED702}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg", "..\CxImage\current-version\jpeg\jpeg.vcproj", "{D9A24E0C-78A0-41BD-904E-CED748AF5E77}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CxImage", "..\CxImage\current-version\CxImage\CxImage.vcproj", "{7228F04B-F785-4074-BBC1-FC2C78F8AF2A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D9A24E0C-78A0-41BD-904E-CED748AF5E77} = {D9A24E0C-78A0-41BD-904E-CED748AF5E77}
+		{E6FE5B4E-A52F-4FC1-A7EB-9F1D76211B5A} = {E6FE5B4E-A52F-4FC1-A7EB-9F1D76211B5A}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D88A811-1336-49D1-85AD-95938ADB50B5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0D88A811-1336-49D1-85AD-95938ADB50B5}.Debug|Win32.Build.0 = Debug|Win32
+		{0D88A811-1336-49D1-85AD-95938ADB50B5}.Release|Win32.ActiveCfg = Release|Win32
+		{0D88A811-1336-49D1-85AD-95938ADB50B5}.Release|Win32.Build.0 = Release|Win32
+		{1BE00032-4E7B-4D98-967C-274DCBC94006}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1BE00032-4E7B-4D98-967C-274DCBC94006}.Release|Win32.ActiveCfg = Release|Win32
+		{BA3730D0-492A-4B37-85A4-29D50F3D000F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BA3730D0-492A-4B37-85A4-29D50F3D000F}.Debug|Win32.Build.0 = Debug|Win32
+		{BA3730D0-492A-4B37-85A4-29D50F3D000F}.Release|Win32.ActiveCfg = Release|Win32
+		{BA3730D0-492A-4B37-85A4-29D50F3D000F}.Release|Win32.Build.0 = Release|Win32
+		{1ED27CB1-520D-401F-8242-E03E171ED702}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1ED27CB1-520D-401F-8242-E03E171ED702}.Debug|Win32.Build.0 = Debug|Win32
+		{1ED27CB1-520D-401F-8242-E03E171ED702}.Release|Win32.ActiveCfg = Release|Win32
+		{1ED27CB1-520D-401F-8242-E03E171ED702}.Release|Win32.Build.0 = Release|Win32
+		{E6FE5B4E-A52F-4FC1-A7EB-9F1D76211B5A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E6FE5B4E-A52F-4FC1-A7EB-9F1D76211B5A}.Debug|Win32.Build.0 = Debug|Win32
+		{E6FE5B4E-A52F-4FC1-A7EB-9F1D76211B5A}.Release|Win32.ActiveCfg = Release|Win32
+		{E6FE5B4E-A52F-4FC1-A7EB-9F1D76211B5A}.Release|Win32.Build.0 = Release|Win32
+		{D9A24E0C-78A0-41BD-904E-CED748AF5E77}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D9A24E0C-78A0-41BD-904E-CED748AF5E77}.Debug|Win32.Build.0 = Debug|Win32
+		{D9A24E0C-78A0-41BD-904E-CED748AF5E77}.Release|Win32.ActiveCfg = Release|Win32
+		{D9A24E0C-78A0-41BD-904E-CED748AF5E77}.Release|Win32.Build.0 = Release|Win32
+		{7228F04B-F785-4074-BBC1-FC2C78F8AF2A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7228F04B-F785-4074-BBC1-FC2C78F8AF2A}.Debug|Win32.Build.0 = Debug|Win32
+		{7228F04B-F785-4074-BBC1-FC2C78F8AF2A}.Release|Win32.ActiveCfg = Release|Win32
+		{7228F04B-F785-4074-BBC1-FC2C78F8AF2A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

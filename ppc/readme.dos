@@ -1,0 +1,108 @@
+/*
+	$Id: readme.dos,v 1.8 1999/03/22 06:16:24 lightner Exp crosser $
+*/
+
+/*
+	Copyright (c) 1997,1998 Eugene G. Crosser
+	Copyright (c) 1998,1999 Bruce D. Lightner (DOS/Windows support)
+
+	You may distribute and/or use for any purpose modified or unmodified
+	copies of this software if you preserve the copyright notice above.
+
+	THIS SOFTWARE IS PROVIDED AS IS AND COME WITH NO WARRANTY OF ANY
+	KIND, EITHER EXPRESSED OR IMPLIED.  IN NO EVENT WILL THE
+	COPYRIGHT HOLDER BE LIABLE FOR ANY DAMAGES RESULTING FROM THE
+	USE OF THIS SOFTWARE.
+*/
+
+/*
+	$Log: readme.dos,v $
+	Revision 1.8  1999/03/22 06:16:24  lightner
+	Fix typo
+
+	Revision 1.6  1999/01/17 13:33:48  crosser
+	change copyright info
+
+	Revision 1.5  1998/10/18 13:18:27  crosser
+	Put RCS logs and I.D. into the source
+
+	Revision 1.4  1998/08/09 17:02:22  crosser
+	notes about the port speed and TZ variable
+	
+	Revision 1.3  1998/08/01 13:12:41  lightner
+	*** empty log message ***
+	
+	Revision 1.2  1998/02/28 09:20:41  lightner
+	no more file size limit
+	
+	Revision 1.1  1998/02/06 00:17:16  lightner
+	Initial revision
+	
+*/
+
+README.DOS
+
+This is a 16-bit MS-DOS version of Eugene G. Crosser's "photopc" digital
+camera software.  This software is known to work with Agfa, Epson and
+Olympus cameras with 80x86-based PC's, laptops, and "palmtops" (e.g.,
+HP200LX) running MS-DOS.  
+
+The software has been found to run at the camera's fastest serial port
+speed (i.e., 115200 baud) on newer PCs.  However, a reduced serial port
+speed (using the -s command line option) may be needed for proper
+operation on older PCs and laptops (and with most "palmtops", due to
+their slow processors).  Note that the program's default serial port
+speed is 115200 baud.
+
+Note that due to the camera design, negotiation always starts at 19200
+baud, so if your serial port only runs up to 9600, it won't work even
+despite 9600 is a valid communication speed for the program.
+
+The MS-DOS version also will run in a command window (i.e., "MS-DOS
+Prompt") under Windows 95 and Windows NT (but often times only at
+reduced serial port rates).
+
+This MS-DOS version was compiled under Borland International's 16-bit
+80x86 compiler, Turbo C++ Version 3.00, using the "small" memory model.
+Refer to the makefile "makefile.dos" for compile instructions.
+
+Pay close attention on the `TZ' environment variable definition.  If
+this variable is not set, or set improperly, MS/DOS makes very strange
+assumtion about your timezone, and result of setting and displaying
+of the camera internal clock may be unpredictable.
+
+LIMITATIONS: 
+
+The MS-DOS code has been modified to support >64K byte images (using
+#define LOW_MEMORY).  This was achieved by changing the program's logic
+to write image data to the disk file in 2048-byte chunks, as the data is
+being read from the camera.  The other versions of the software (i.e.,
+Unix/Windows) write the image to disk only after the entire image has
+been read from the camera (into a large in-memory buffer).
+
+The serial I/O package used by the MS-DOS version of "photopc.exe"
+supports serial ports COM1, COM2, COM3, and COM4, assuming the standard
+IRQ assignments (i.e., COM1 and COM3 use IRQ4 and COM2 and COM4 use
+IRQ3).
+
+The "photopc.exe" program installs an interrupt handler for the serial
+port at IRQ3 or IRQ4.  This handler is removed on program exit, or if
+the user terminates the program with ^C or control-break.  Other
+abnormal exits (e.g., hard disk I/O errors) may leave the the handler
+installed...which is sure to cause problems!
+
+This software makes use of a serial I/O package (comio.c) taken from a
+public-domain SIMTEL archive named "cvt100.zip" (VT100, A Simple VT100
+Emulator in Turbo C 1.5 by Jerry Joplin), which was somehow derived from
+Kermit.  These routines do not take advantage of the serial port queues
+available in modern PC chipsets (i.e., 16550 UARTS).
+
+Refer to the file "README" for more information.
+
+Please consult the following URL for the latest softweare information:
+
+       http://www.average.com/digicam/
+
+Trademarks are properties of their respective respected owners.
+
+Bruce D. Lightner (lightner@lightner.net)   Sat Jul 25 17:37:40 pdt 1998

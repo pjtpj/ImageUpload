@@ -1,0 +1,142 @@
+.\"	$Id: epinfo.man,v 1.5 1999/03/21 20:22:09 crosser Exp crosser $
+.\"
+.\"	Copyright (c) 1997,1998 Eugene G. Crosser
+.\"	Copyright (c) 1998 Bruce D. Lightner (DOS/Windows support)
+.\"
+.\"	You may distribute and/or use for any purpose modified or unmodified
+.\"	copies of this software if you preserve the copyright notice above.
+.\"
+.\"	THIS SOFTWARE IS PROVIDED AS IS AND COME WITH NO WARRANTY OF ANY
+.\"	KIND, EITHER EXPRESSED OR IMPLIED.  IN NO EVENT WILL THE
+.\"	COPYRIGHT HOLDER BE LIABLE FOR ANY DAMAGES RESULTING FROM THE
+.\"	USE OF THIS SOFTWARE.
+.\"
+.\"	$Log: epinfo.man,v $
+.\"	Revision 1.5  1999/03/21 20:22:09  crosser
+.\"	sync format desc with actual program
+.\"
+.\"	Revision 1.4  1999/03/13 13:10:13  crosser
+.\"	reflect 3.00 changes
+.\"
+.\"	Revision 1.3  1999/03/06 10:24:16  crosser
+.\"	support Exif
+.\"
+.\"	Revision 1.2  1998/10/18 13:18:27  crosser
+.\"	Put RCS logs and I.D. into the source
+.\"
+.\"	Revision 1.1  1997/08/17 08:59:54  crosser
+.\"	Initial revision
+.\"
+.TH EPINFO 1 "24 May 1997" "PhotoPC manipulation tool" "User Commands"
+.SH NAME
+
+epinfo \- extract technical information from digital camera generated files
+
+.SH SYNOPSIS
+
+epinfo [-h] [-V] [-z] [-r] [-t] [-f fmt] [-T <TagName>] <filename> ...
+
+.SH DESCRIPTION
+
+This command extracts the contents of TIFF directory of Exif files or
+APP12 marker from JFIF files, parses it and optionaly finds specific
+data inside it.  If used without
+.BR -T ", "-r " and "-t
+options, dumps the complete block data in human readable format.  With
+.B -r
+and
+.B -t
+options, renames and changes timestamp of the files.
+
+.PP
+.SH "OPTIONS"
+
+.TP 0.5i
+.B -h
+This option produces a help screen of all options and commands.
+
+.TP 0.5i
+.B -V
+This option prints software revision information.
+
+.TP 0.5i
+.B -z
+This option sets no time-zone processing mode.  Use this option if the
+camera's clock is set up shifted by the local timezone offset (as it is
+when you set it manually to the local time).
+
+.TP 0.5i
+.B -r
+Rename files, generating new name based on the time of snapshot and
+.B -f
+option value.
+
+.TP 0.5i
+.B -t
+Set timestamp of the files to the time of snapshots.
+
+.TP 0.5i
+.B -f timeformat
+This option allows to specify the format for automatically generated
+image file names; the value is used as the format string for strftime(3)
+function.  By default, names of the format "MMDD_NNN.jpg" are generated,
+where MM is a month, DD is a day, and NNN is a count starting from 001.
+A good starting point for the timeformat value could be
+"%Y_%m_%d-%H_%M_%S.jpg".  If the format string contains context "%%XXXd"
+where XXX are digits, it is taken for the count, i.e. if the file with
+such name is present, next count is tried.  If the format string does
+not contain "%%XXXd" part, the count field, if necessary, is appended at
+the end of the name.
+
+A few single-character formats are used as shortcuts.  "x" makes the
+name of seconds since the epoch in hexadecimal format (8 characters +
+".jpg"), "d" - the same in decimal format (10 characters), "1" stands
+for default format "%m%d_%%03d.jpg", "2" stands for "%y%m%d%%02d.jpg",
+"3" stands for "%Y_%m_%d-%H_%M_%S.jpg" and 4 stands for
+"%Y/%m/%d/%H_%M_%S.jpg".  The program attempts to create intermediate
+directories is necessary (and possible).
+
+.TP 0.5i
+.B -T <TagName>
+Output the value of this keyword in the information block.  Note that
+keywords are case sensitive.  TagName
+.I DateTime
+has special meaning: if the file is
+.IR Exif ",
+it just prints the value of DateTime tag, and if the format is old
+.IR APP12 ",
+it outputs the value of
+.I TimeDate
+tag in the same format as Exif
+.IR DateTime ".
+
+.SH ARGUMENTS
+
+.TP 0.5i
+.B <filename> ...
+List of filenames to process.
+
+.SH EXAMPLES
+
+% epinfo -f3 -rt pic00001.jpg
+
+% epinfo -T FNumber 0512_003.jpg
+
+.SH OTHER NOTES
+
+.SH OTHER NOTES
+
+The latest version of this tool can be found at
+ftp://ftp.average.org/pub/photopc/; see also WWW page at
+http://www.average.org/digicam/.
+
+Trademarks are properties of their respective owners.
+
+.SH COPYRIGHT
+
+The program is copyrighted by Eugene G. Crosser <crosser@average.org>
+and freely distributable.  See README file for details.
+
+.SH SEE ALSO
+
+photopc(1)

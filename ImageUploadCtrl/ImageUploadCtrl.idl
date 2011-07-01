@@ -1,0 +1,64 @@
+// ImageUploadCtrl.idl : IDL source for ImageUploadCtrl
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ImageUploadCtrl.tlb) and marshalling code.
+
+#include "olectl.h"
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(A2DADCBF-FF08-4772-8F46-D9E6D1086B74),
+	dual,
+	nonextensible,
+	helpstring("IImageUpload Interface"),
+	pointer_default(unique)
+]
+interface IImageUpload : IDispatch{
+	[id(1), helpstring("method GetImage")] HRESULT GetImage(void);
+	[propget, id(2), helpstring("property ResizeMode")] HRESULT ResizeMode([out, retval] LONG* pVal);
+	[propput, id(2), helpstring("property ResizeMode")] HRESULT ResizeMode([in] LONG newVal);
+	[propget, id(3), helpstring("property StretchMode")] HRESULT StretchMode([out, retval] LONG* pVal);
+	[propput, id(3), helpstring("property StretchMode")] HRESULT StretchMode([in] LONG newVal);
+	[propget, id(4), helpstring("property DesignWidth")] HRESULT DesignWidth([out, retval] LONG* pVal);
+	[propput, id(4), helpstring("property DesignWidth")] HRESULT DesignWidth([in] LONG newVal);
+	[propget, id(5), helpstring("property DesignHeight")] HRESULT DesignHeight([out, retval] LONG* pVal);
+	[propput, id(5), helpstring("property DesignHeight")] HRESULT DesignHeight([in] LONG newVal);
+	[propget, id(6), helpstring("property ImageURL")] HRESULT ImageURL([out, retval] BSTR* pVal);
+	[propput, id(6), helpstring("property ImageURL")] HRESULT ImageURL([in] BSTR newVal);
+	[propget, id(7), helpstring("property UploadImageURL")] HRESULT UploadImageURL([out, retval] BSTR* pVal);
+	[propput, id(7), helpstring("property UploadImageURL")] HRESULT UploadImageURL([in] BSTR newVal);
+	[propget, id(8), helpstring("property CameraType")] HRESULT CameraType([out, retval] LONG* pVal);
+	[propput, id(8), helpstring("property CameraType")] HRESULT CameraType([in] LONG newVal);
+};
+
+[
+	uuid(282CF87D-14E9-4146-8397-618EBC816DC9),
+	version(1.0),
+	helpstring("ImageUploadCtrl 1.0 Type Library")
+]
+library ImageUploadCtrlLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(0730AD53-D0F9-4F75-A3EE-C06BCB34F140),
+		helpstring("_IImageUploadEvents Interface")
+	]
+	dispinterface _IImageUploadEvents
+	{
+		properties:
+		methods:
+	};
+	[
+		uuid(652FE09F-3289-414A-B1D7-2E661FA6119B),
+		control,
+		helpstring("ImageUpload Class")
+	]
+	coclass ImageUpload
+	{
+		[default] interface IImageUpload;
+		[default, source] dispinterface _IImageUploadEvents;
+	};
+};

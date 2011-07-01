@@ -1,0 +1,52 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:616: gcc -E conftest.c
+configure:980: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1028: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1025: warning: return-type defaults to `int'
+configure:1054: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1119: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1151: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1151: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1151: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1151: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1188: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1188: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1188: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1188: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1184: sys/utime.h: No such file or directory
+configure:1268: gcc -c -g -O -Wall  conftest.c 1>&5
+configure: In function `t':
+configure:1242: warning: unused variable `s'
+configure:1262: warning: unused variable `foo'
+configure:1230: warning: unused variable `zero'
+configure:1224: warning: unused variable `x'
+configure:1241: warning: `t' might be used uninitialized in this function
+configure:1259: warning: `b' might be used uninitialized in this function
+configure:1364: gcc -c -g -O -Wall  conftest.c 1>&5
+configure: In function `t':
+configure:1360: warning: unused variable `tp'
+configure:1397: gcc -c -g -O -Wall  conftest.c 1>&5
+configure: In function `t':
+configure:1393: warning: statement with no effect
+configure:1430: gcc -c -g -O -Wall  conftest.c 1>&5
+configure: In function `t':
+configure:1426: warning: statement with no effect
+configure:1503: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1495: warning: return-type defaults to `int'
+configure:1537: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1529: warning: return-type defaults to `int'
+configure:1571: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1563: warning: return-type defaults to `int'
+configure:1659: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1659: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1659: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1659: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1659: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1659: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1710: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1710: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1710: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1710: gcc -o conftest -g -O -Wall   conftest.c  1>&5
+configure:1759: gcc -o conftest -g -O -Wall   conftest.c  1>&5

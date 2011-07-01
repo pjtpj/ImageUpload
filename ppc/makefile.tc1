@@ -1,0 +1,171 @@
+#	$Id: makefile.tc1,v 2.7 1999/03/12 10:37:13 crosser Exp crosser $
+#
+#	Copyright (c) 1997,1998 Eugene G. Crosser
+#	Copyright (c) 1998 Bruce D. Lightner (DOS/Windows support)
+#
+#	You may distribute and/or use for any purpose modified or unmodified
+#	copies of this software if you preserve the copyright notice above.
+#
+#	THIS SOFTWARE IS PROVIDED AS IS AND COME WITH NO WARRANTY OF ANY
+#	KIND, EITHER EXPRESSED OR IMPLIED.  IN NO EVENT WILL THE
+#	COPYRIGHT HOLDER BE LIABLE FOR ANY DAMAGES RESULTING FROM THE
+#	USE OF THIS SOFTWARE.
+#
+#	$Log: makefile.tc1,v $
+#	Revision 2.7  1999/03/12 10:37:13  crosser
+#	try workaround a problem with tmake
+#
+#	Revision 2.6  1999/03/12 10:19:17  crosser
+#	add ctrl-Z in the end
+#
+#	Revision 2.5  1999/03/12 10:06:23  crosser
+#	make usable with tc1.0
+#
+#	Revision 2.4  1999/03/10 22:34:43  crosser
+#	sync with structure changes
+#
+#	Revision 2.3  1999/01/17 13:27:59  bruce
+#	make win/dos versions in separate subdirs
+#
+#	Revision 2.2  1998/10/18 13:18:27  crosser
+#	Put RCS logs and I.D. into the source
+#
+#	Revision 2.1  1998/02/16 06:13:29  lightner
+#	Add $(MODEL) and change to "small"; improve cleanup logic
+#	
+#	Revision 2.0  1998/02/13 23:01:50  crosser
+#	remove $@ for work with make from TC1.0
+#	
+#	Revision 1.2  1998/02/08 19:58:38  crosser
+#	Support low memory: chunked saving etc.
+#	
+#	Revision 1.1  1998/01/18 02:16:45  crosser
+#	Initial revision
+#
+# Modified by Bruce D. Lightner (lightner@lightner.net) on 1/8/98 to
+# support builds under Borland International Turbo C++ Version 3.0.
+#
+# To "make" using Borland International's Turbo C++ toolset, ensure that
+# your PATH points to the proper Turbo C++ binary directory, then enter
+# the following commands:
+#
+#      make -f Makefile.dos gclean
+#      make -f Makefile.dos
+#
+# Executables and library file will be built in the directory .\msdos
+
+# -DUNIX
+# Use UNIX specific I/O and other things.
+
+# -DDOS
+# Use DOS-specific I/O and other things.
+
+# -DMSWINDOWS
+# Use Windows-specific I/O and other things.
+
+# -DLOWMEMORY
+# Try to work even if the whole image dill not fit in addressable
+# memory (e.g DOS or XENIX/286)
+
+# -DINT16=<type-for-16bit-integer>
+# Here you need to specify which integer type correspond to 16bit word.
+# On Intel x86 and SPARC it is `short' and I think it is the same on
+# most reasonable architectures.  But if you have anything really exotic,
+# watch out!
+
+# -DHAVE_STRFTIME
+# use strftime(3) to make file names with format given in -f option
+
+# -DHAVE_RENAME
+# use rename(3) to rename files
+
+# This one is good for DOS:
+OPTS	= -DDOS -DLOWMEMORY -DINT16=short -DHAVE_STRFTIME -DHAVE_RENAME
+
+CC	= tcc
+
+#MODEL	= -ml
+MODEL	= -ms
+
+CFLAGS	= $(MODEL) -O2 -G -wsus -wpar
+
+LD	= tlink
+LDFLAGS	= $(MODEL) -M
+
+AR	= tlib
+
+INC = -I.
+
+T = msdos
+
+##### No need to touch anything below this line #####
+
+LIBOBJS=eph_read.obj eph_iob.obj eph_err.obj eph_cmd.obj \
+	eph_io.obj eph_open.obj getopt.obj usleep.obj \
+	strcscmp.obj comio.obj
+LIBLIST1=+eph_read.obj+eph_iob.obj+eph_err.obj+eph_cmd.obj
+LIBLIST2=+eph_io.obj+eph_open.obj+getopt.obj+usleep.obj
+LIBLIST3=+strcscmp.obj+comio.obj
+
+.c.obj:
+	$(CC) $(CFLAGS) $(OPTS) $(INC) -c $<
+
+all:  $(T) $(T)/eph_io.lib $(T)/photopc.exe $(T)/epinfo.exe
+
+$(T):
+	mkdir $(T)
+
+$(T)/eph_io.lib: $(T) eph_io.lib
+	copy eph_io.lib $(T)
+
+$(T)/photopc.exe: $(T) photopc.exe
+	copy photopc.exe $(T)
+
+$(T)/epinfo.exe: $(T) epinfo.exe
+	copy epinfo.exe $(T)
+
+eph_io.lib:      $(LIBOBJS)
+	del eph_io.lib
+	$(AR) eph_io.lib $(LIBLIST1)
+	$(AR) eph_io.lib $(LIBLIST2)
+	$(AR) eph_io.lib $(LIBLIST3)
+	del eph_io.bak
+
+photopc.exe:     photopc.obj a12scan.obj eph_io.lib fnames.obj ctimez.obj filetime.obj eph_io.lib
+	$(CC) $(LDFLAGS) photopc.obj a12scan.obj fnames.obj ctimez.obj filetime.obj eph_io.lib
+
+epinfo.exe:      epinfo.obj a12scan.obj exifscan.obj fnames.obj ctimez.obj filetime.obj eph_io.lib
+	$(CC) $(LDFLAGS) epinfo.obj a12scan.obj exifscan.obj fnames.obj ctimez.obj filetime.obj eph_io.lib
+
+clean:
+	del eph_io.bak
+	del *.map
+	del *.obj
+	del eph_io.lib
+	del photopc.exe
+	del epinfo.exe
+
+gclean:	clean
+	del $(T)\eph_io.lib
+	del $(T)\photopc.exe
+	del $(T)\epinfo.exe
+	rmdir $(T)
+
+photopc.obj: photopc.c eph_io.h a12scan.h fnames.h ctimez.h filetime.h revision.h getopt.h strcscmp.h
+epinfo.obj: epinfo.c a12scan.h exifscan.h fnames.h ctimez.h filetime.h revision.h getopt.h strcscmp.h
+a12scan.obj: a12scan.c a12scan.h
+exifscan.obj: exifscan.c exifscan.h
+fnames.obj: fnames.c fnames.h
+ctimez.obj: ctimez.c ctimez.h
+filetime.obj: filetime.c filetime.h
+eph_read.obj: eph_read.c eph_io.h comio.h usleep.h
+eph_iob.obj: eph_iob.c eph_io.h
+eph_err.obj: eph_err.c eph_io.h eph_priv.h
+eph_cmd.obj: eph_cmd.c eph_io.h eph_priv.h
+eph_io.obj: eph_io.c eph_io.h eph_priv.h usleep.h comio.h
+eph_open.obj: eph_open.c eph_io.h eph_priv.h usleep.h comio.h usleep.h
+getopt.obj: getopt.c getopt.h
+usleep.obj: usleep.c
+strcscmp.obj: strcscmp.c
+comio.obj: comio.c
+

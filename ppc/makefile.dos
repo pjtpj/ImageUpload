@@ -1,0 +1,215 @@
+#	$Id: makefile.dos,v 2.8 1999/03/22 06:08:44 lightner Exp crosser $
+#
+#	Copyright (c) 1997,1998 Eugene G. Crosser
+#	Copyright (c) 1998 Bruce D. Lightner (DOS/Windows support)
+#
+#	You may distribute and/or use for any purpose modified or unmodified
+#	copies of this software if you preserve the copyright notice above.
+#
+#	THIS SOFTWARE IS PROVIDED AS IS AND COME WITH NO WARRANTY OF ANY
+#	KIND, EITHER EXPRESSED OR IMPLIED.  IN NO EVENT WILL THE
+#	COPYRIGHT HOLDER BE LIABLE FOR ANY DAMAGES RESULTING FROM THE
+#	USE OF THIS SOFTWARE.
+#
+#	$Log: makefile.dos,v $
+#	Revision 2.8  1999/03/22 06:08:44  lightner
+#	Fix logic to put ALL binaries into msdos/
+#	Add extra library to keep DOS link command line short
+#
+#	Revision 2.7  1999/03/12 10:37:13  crosser
+#	try workaround a problem with tmake
+#
+#	Revision 2.6  1999/03/12 10:19:17  crosser
+#	add ctrl-Z in the end
+#
+#	Revision 2.5  1999/03/12 10:06:23  crosser
+#	make usable with tc1.0
+#
+#	Revision 2.4  1999/03/10 22:34:43  crosser
+#	sync with structure changes
+#
+#	Revision 2.3  1999/01/17 13:27:59  bruce
+#	make win/dos versions in separate subdirs
+#
+#	Revision 2.2  1998/10/18 13:18:27  crosser
+#	Put RCS logs and I.D. into the source
+#
+#	Revision 2.1  1998/02/16 06:13:29  lightner
+#	Add $(MODEL) and change to "small"; improve cleanup logic
+#	
+#	Revision 2.0  1998/02/13 23:01:50  crosser
+#	remove $@ for work with make from TC1.0
+#	
+#	Revision 1.2  1998/02/08 19:58:38  crosser
+#	Support low memory: chunked saving etc.
+#	
+#	Revision 1.1  1998/01/18 02:16:45  crosser
+#	Initial revision
+#
+# Modified by Bruce D. Lightner (lightner@lightner.net) on 1/8/98 to
+# support builds under Borland International Turbo C++ Version 3.0.
+#
+# To "make" using Borland International's Turbo C++ toolset, ensure that
+# your PATH points to the proper Turbo C++ binary directory, then enter
+# the following commands:
+#
+#      make -f Makefile.dos gclean
+#      make -f Makefile.dos
+#
+# Executables and library file will be built in the directory .\msdos
+
+# -DUNIX
+# Use UNIX specific I/O and other things.
+
+# -DDOS
+# Use DOS-specific I/O and other things.
+
+# -DMSWINDOWS
+# Use Windows-specific I/O and other things.
+
+# -DLOWMEMORY
+# Try to work even if the whole image dill not fit in addressable
+# memory (e.g DOS or XENIX/286)
+
+# -DINT16=<type-for-16bit-integer>
+# Here you need to specify which integer type correspond to 16bit word.
+# On Intel x86 and SPARC it is `short' and I think it is the same on
+# most reasonable architectures.  But if you have anything really exotic,
+# watch out!
+
+# -DHAVE_STRFTIME
+# use strftime(3) to make file names with format given in -f option
+
+# -DHAVE_RENAME
+# use rename(3) to rename files
+
+# This one is good for DOS:
+OPTS	= -DDOS -DLOWMEMORY -DINT16=short -DHAVE_STRFTIME -DHAVE_RENAME
+
+CC	= tcc
+
+#MODEL	= -ml
+MODEL	= -ms
+
+CFLAGS	= $(MODEL) -O2 -G -wsus -wpar
+
+LD	= tlink
+LDFLAGS	= $(MODEL) -M
+
+AR	= tlib
+
+INC = -I.
+
+T = msdos
+
+##### No need to touch anything below this line #####
+
+LIBOBJS	= $(T)/eph_read.obj $(T)/eph_iob.obj $(T)/eph_err.obj $(T)/eph_cmd.obj \
+	$(T)/eph_io.obj $(T)/eph_open.obj $(T)/getopt.obj $(T)/usleep.obj \
+	$(T)/strcscmp.obj $(T)/comio.obj
+LIBLIST1=+$(T)\eph_read.obj+$(T)\eph_iob.obj+$(T)\eph_err.obj+$(T)\eph_cmd.obj
+LIBLIST2=+$(T)\eph_io.obj+$(T)\eph_open.obj+$(T)\getopt.obj+$(T)\usleep.obj
+LIBLIST3=+$(T)\strcscmp.obj+$(T)\comio.obj
+
+
+LIB2OBJS=$(T)/a12scan.obj $(T)/fnames.obj $(T)/ctimez.obj $(T)/filetime.obj \
+	$(T)/exifscan.obj
+LIB2LIST1=+$(T)\a12scan.obj+$(T)\fnames.obj+$(T)\ctimez.obj+$(T)\filetime.obj
+LIB2LIST2=+$(T)\exifscan.obj
+
+
+.c.obj:
+	$(CC) $(CFLAGS) $(OPTS) $(INC) -c $<
+
+all:	$(T) $(T)/eph_io.lib $(T)/photopc.exe $(T)/epinfo.exe
+
+$(T):
+	command /c mkdir $(T)
+	command /c ren $(T) $(T)
+
+$(T)/eph_io.lib:	$(LIBOBJS)
+	del $(T)\eph_io.lib
+	$(AR) $(T)\eph_io.lib $(LIBLIST1)
+	$(AR) $(T)\eph_io.lib $(LIBLIST2)
+	$(AR) $(T)\eph_io.lib $(LIBLIST3)
+	del $(T)\eph_io.bak
+
+$(T)/ephextra.lib:      $(LIB2OBJS)
+	del $(T)\ephextra.lib
+	$(AR) $(T)\ephextra.lib $(LIB2LIST1)
+	$(AR) $(T)\ephextra.lib $(LIB2LIST2)
+	del $(T)\ephextra.bak
+
+$(T)/photopc.exe:     $(T)/photopc.obj $(T)/eph_io.lib $(T)/ephextra.lib
+	$(CC) $(LDFLAGS) $(T)/photopc.obj $(T)/eph_io.lib $(T)/ephextra.lib
+
+$(T)/epinfo.exe:      $(T)/epinfo.obj $(T)/eph_io.lib $(T)/ephextra.lib
+	$(CC) $(LDFLAGS) $(T)/epinfo.obj $(T)/eph_io.lib $(T)/ephextra.lib
+
+tidyup:
+	del $(T)\ephextra.lib
+	del $(T)\ephextra.bak
+	del $(T)\eph_io.bak
+	del $(T)\*.map
+	del $(T)\*.obj
+
+clean:	tidyup
+	del $(T)\eph_io.lib
+	del $(T)\photopc.exe
+	del $(T)\epinfo.exe
+	rmdir $(T)
+
+MKOBJ = $(CC) $(CFLAGS) $(OPTS) $(INC) -c
+
+
+$(T)/photopc.obj: photopc.c eph_io.h a12scan.h fnames.h ctimez.h filetime.h revision.h getopt.h strcscmp.h
+	$(MKOBJ) -o$(T)/photopc.obj photopc.c
+
+$(T)/epinfo.obj: epinfo.c a12scan.h exifscan.h fnames.h ctimez.h filetime.h revision.h getopt.h strcscmp.h
+	$(MKOBJ) -o$(T)/epinfo.obj epinfo.c
+
+$(T)/a12scan.obj: a12scan.c a12scan.h
+	$(MKOBJ) -o$(T)/a12scan.obj a12scan.c
+
+$(T)/exifscan.obj: exifscan.c exifscan.h
+	$(MKOBJ) -o$(T)/exifscan.obj exifscan.c
+
+$(T)/fnames.obj: fnames.c fnames.h ctimez.h
+	$(MKOBJ) -o$(T)/fnames.obj fnames.c
+
+$(T)/ctimez.obj: ctimez.c ctimez.h
+	$(MKOBJ) -o$(T)/ctimez.obj ctimez.c
+
+$(T)/filetime.obj: filetime.c filetime.h ctimez.h
+	$(MKOBJ) -o$(T)/filetime.obj filetime.c
+
+$(T)/eph_read.obj: eph_read.c eph_io.h comio.h usleep.h
+	$(MKOBJ) -o$(T)/eph_read.obj eph_read.c
+
+$(T)/eph_iob.obj: eph_iob.c eph_io.h
+	$(MKOBJ) -o$(T)/eph_iob.obj eph_iob.c
+
+$(T)/eph_err.obj: eph_err.c eph_io.h eph_priv.h
+	$(MKOBJ) -o$(T)/eph_err.obj eph_err.c
+
+$(T)/eph_cmd.obj: eph_cmd.c eph_io.h eph_priv.h
+	$(MKOBJ) -o$(T)/eph_cmd.obj eph_cmd.c
+
+$(T)/eph_io.obj: eph_io.c eph_io.h eph_priv.h usleep.h comio.h
+	$(MKOBJ) -o$(T)/eph_io.obj eph_io.c
+
+$(T)/eph_open.obj: eph_open.c eph_io.h eph_priv.h usleep.h comio.h usleep.h
+	$(MKOBJ) -o$(T)/eph_open.obj eph_open.c
+
+$(T)/getopt.obj: getopt.c getopt.h
+	$(MKOBJ) -o$(T)/getopt.obj getopt.c
+
+$(T)/usleep.obj: usleep.c
+	$(MKOBJ) -o$(T)/usleep.obj usleep.c
+
+$(T)/strcscmp.obj: strcscmp.c
+	$(MKOBJ) -o$(T)/strcscmp.obj strcscmp.c
+
+$(T)/comio.obj: comio.c
+	$(MKOBJ) -o$(T)/comio.obj comio.c
+

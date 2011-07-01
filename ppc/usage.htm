@@ -1,0 +1,348 @@
+<html>
+<head>
+<!--
+	$Id: usage.htm,v 2.7 1999/03/22 06:55:47 lightner Exp crosser $
+
+	$Log: usage.htm,v $
+	Revision 2.7  1999/03/22 06:55:47  lightner
+	Add back RCS revision info
+
+	Revision 2.5  1999/01/17 13:36:50  crosser
+	fix Bruce's address
+
+	Revision 2.4  1998/10/18 13:18:27  crosser
+	Put RCS logs and I.D. into the source
+
+	Revision 2.3  1998/02/27 03:44:11  lightner
+	Update for -z and -V options
+	
+	Revision 2.2  1998/02/15 13:21:13  lightner
+	Update HTML to match Web page; add RCS ID to end
+	
+	Revision 2.1  1998/01/18 02:16:45  crosser
+	edit text
+	
+	Revision 2.0  1998/01/17 11:01:44  crosser
+	initial version
+
+-->
+<title>Epson PhotoPC Software for Unix/Linux, Windows, and MS-DOS</title>
+</head>
+<body>
+<img src="http://www.lightner.net/lightner/images/photopc1.gif" align=right valigh=top width=182 height=107>
+<h1>Epson PhotoPC Software for Unix/Linux, Windows, and MS-DOS</h1>
+
+This page describes "freeware" software which may be used to control
+and retrieve photos from Epson PhotoPC digital cameras under Unix/Linux,
+Microsoft Windows 95, Windows 98, Windows NT, and MS-DOS.  This software
+also may work with Agfa ePhoto, Olympus D-xxxL/Z, Sanyo, Nikon Coolpix,
+Toshiba PDR-2, and other digital cameras based on firmware from
+<A HREF=http://www.sierraimaging.com/>Sierra Imaging, Inc.</A>.
+
+<h2>The Camera</h2>
+
+The <A HREF="http://www.lightner.net/lightner/photopc.html">Epson
+PhotoPC</A> is one of a family of digital cameras based on Fujitsu's
+SPARCLite microprocessor and <A HREF=http://www.sierraimaging.com/>Sierra
+Imaging's</A> chipsets and firmware.  The least expensive Epson
+camera model produces quality photos in JPEG format at a resolution
+of 640x480 at a moderate price (~$250 "street price").  Other camera
+versions, including those from Olympus, produce higher-resolution
+JPEG images, up to 1280x1024 pixels, using a SRL format much like a
+conventional 35mm film camera, at a price closer to $1,000.  All <A
+HREF="http://www.average.org/digicam/cameras.html">cameras compatible
+with this software</A> offer a serial port connection to a PC for the
+purposes of downloading photos from the camera.
+
+<p>Supported camera models include:
+<A HREF="http://www.agfa.com/">Agfa</A>
+	ePhoto 780,
+	ePhoto 1280 and
+	ePhoto 1680;
+
+<A HREF="http://www.epson.com/cam_scan/">Epson</A>
+	PhotoPC "classic",
+	PhotoPC 500,
+	PhotoPC 550 and
+	PhotoPC 600;
+
+<A HREF="http://www.nikonusa.com/">Nikon</A>
+	CoolPix 900S and
+	CoolPix 900;
+
+<A HREF="http://www.olympusamerica.com/">Olympus</A>
+	D-220L,
+	D-320L,
+	D-340L,
+	C-400L,
+	C-400Z,
+	D-400 Zoom,
+	C-410L,
+	D-500L,
+	D-600L,
+	D-600 Zoom,
+	C-820L,
+	C-840L,
+	C-900 Zoom,
+	C-1000L and
+	C-1400L;
+
+<A HREF="http://www.toshiba.com/taisisd/dsc/">Toshiba</A>
+	PDR-2;
+
+and
+<A HREF="http://www.sanyodigital.com/">Sanyo</A>
+	VPC-G200,
+	VPC-G200EX,
+	VPC-G210 and
+	DSC-X300.
+
+<h2>The Software</h2>
+
+The software is command-line oriented, and <em>does not</em> make use of a
+graphical user interface (GIU).  By using this software with a "batch
+file", or a Windows short-cut icon, photos can be quickly downloaded 
+from the camera to a PC via a serial cable, with a minimum of effort.
+
+<p>The software is available for download (in source
+code form) for Unix/Linux platforms from the Eugene
+Crosser's (the author's) digital camera Web site,
+<A HREF="http://www.average.org/digicam/">www.average.org/digicam/</A>.
+A list of compatible digital cameras can be found there.
+Software for MS-DOS, Microsoft Windows 95/98, and Microsoft
+Windows NT, in both executable and source code formats,
+can be found at Bruce Lightner's PhotoPC Web site,
+<A HREF="http://www.lightner.net/lightner/bruce/photopc/">
+www.lightner.net/lightner/bruce/photopc/</A>.
+
+<h2>Documentation</h2>
+
+<font size=+1>Basic features</font>
+<ul>
+<li>Query the camera
+<li>Download individual photos
+<li>Download entire camera
+<li>Delete individual photos
+<li>Delete all photos
+<li>Get photo count
+</ul>
+
+The basic syntax for using <tt>photopc</tt> is:
+<pre>  photopc [-h] [-v[v]] [-q] [-s speed] [-l device] [command [params]] ... </pre>
+Commands are normally entered at an "MS-DOS prompt".  Under Windows,
+camera control commands can be entered using an "MS-DOS Prompt" window
+(sometimes referred to as a "DOS box" or "console window"), or invoked
+using a Windows "short-cut" icon (or a PIF).
+
+<p>To get help on using the program:
+<pre>  photopc -h</pre>
+This will  print a brief (somewhat bewildering) summary of the program's
+options and commands.  For a complete description of the program's options
+and commands see the
+<A HREF="http://www.lightner.net/lightner/bruce/photopc/photopc.html">photopc manual page</A>.
+This file, "photopc.man", is included with the software source package
+in Unix `man' format.
+
+<h3>Specifying the Camera Port</h3>
+
+To specify the serial port to which the camera is attached: 
+<pre>  photopc -l <b>device</b></pre>
+where <b>device</b> is the name of the serial port (a.k.a. "line") which
+has the camera attached.  Under Windows and/or MS-DOS, the allowable
+"device" names are "COM1:" and "COM2:".  The default serial port is
+"COM1:".  <em>(Note: That's "dash-L" and not "dash-one"!)</em>
+
+<h3>Specifying the Serial Port Speed</h3>
+
+To specify the speed of the serial port used to communicate with the camera: 
+<pre>  photopc -s <b>speed</b></pre>
+where <b>speed</b> is the requested baud rate: 9600, 19200, 38400, 57600
+or 115200.  The default speed is usually the highest.  You may find that
+with older PCs a slower speed is needed for reliable operation.
+
+<h3>Querying the Camera</h3>
+
+To query the camera:
+<pre>  photopc query </pre>
+This will dump the entire state of the camera including information
+like the number of photos taken, the amount of free memory, the current
+date/time set in the camera, the camera's model and serial number, the
+user-specified camera setting, etc.
+
+<h3>Downloading a Single Photo</h3>
+
+To download a single photo:
+<pre>  photopc image <b>num</b> <b>filename</b></pre>
+where <b>num</b>
+is the number of the image to be downloaded
+and <b>filename</b> is the name of the file to receive
+the JPEG image.
+For example "<tt>photopc image 4 photo4.jpg</tt>" will download the 4th
+photo into the file "photo4.jpg".
+
+<h3>Downloading the Entire Camera</h3>
+
+To download all the photos in the camera:
+<pre>  photopc image all <b>directory</b></pre>
+where <b>directory</b> is the name of the directory to receive
+the JPEG files.
+
+<p>For example, the command "<tt>photopc image all .</tt>", will
+downloaded all images from the camera into the current working directory,
+into files named "MMDD_CCC.jpg" where "MM" is the month the photo
+was taken, "DD" is the day of the month the photo was taken, and "CCC"
+is a sequence number.
+
+<p>The user can control the program's JPEG file naming algorithm
+using the "-f" option.  Two useful options under MS-DOS are:
+<pre>
+    -f 1    (image file names are MMDD_CCC.jpg (default))
+    -f 2    (image file names are YYMMDDCC.jpg)
+</pre>
+where "YY" is a two-digit year, "MM" is a two-digit month, "DD" is a
+two-digit day of the month (all based on the the time that the photo was
+taken), and "CC" (or "CCC") is a sequence number.  The user actually has
+complete control over the file naming through the use of "-f" and a
+format string...the description of which is beyond the scope of this
+document.
+
+<h3>Deleting a Single Photo</h3>
+
+To delete a single photo:
+<pre>  photopc erase <b>num</b></pre>
+where <b>num</b> is the number of the photo to be deleted.
+
+<h3>Deleting All Photos</h3>
+
+To erase all photos from the camera:
+<pre>  photopc eraseall</pre>
+This will delete all photos from the camera.
+
+<h3>Getting a Photo Count</h3>
+
+To get of count of photos in the camera:
+<pre>  photopc count</pre>
+This will report the number of photos currently stored in the camera.
+
+<h2>Notes</h2>
+
+<h3>Command/Switch Order</h3>
+
+You can use commands in almost any combination.  The program "switches"
+such as "-l" and "-s" can be placed anywhere on the command line.
+The commands (such as "query" and "image") are executed in the order given on
+the command line.
+
+<p>For example, to use serial port COM2 at 57600 baud to query the
+camera, then download all the images in the camera to the 
+directory "/photos" on drive C: (in "YYMMDDCC.jpg" file name format):
+
+<pre>  photopc -l com2: query -f 2 image all c:/photos -s 57600</pre>
+
+A command such as this can be invoked as part of a Windows 95
+<A HREF="http://www.lightner.net/lightner/bruce/ppcshort.gif">
+"short-cut" icon</A>, allowing quick, automatic downloading of a camera with
+a single mouse double-click.
+
+<h3>Communication Problems</h3>
+
+If you have trouble communicating with your camera, try lowering the
+serial port speed using the "-s" option.  (Turning the camera
+<em>on</em> also solves many camera communication problems! :-)
+
+<p>If you interrupt communication with your camera by aborting
+the program (e.g., by enter ^C), you may have to turn the camera
+off and back on in order to restore proper communication.
+
+<p>If you find that the program cannot connect to your PC's serial
+port under Windows, first verify that no other program is using the
+serial port.
+
+<p>The MS-DOS version of "photopc" <em>will</em> work under Windows (even
+Windows 3.1), but often only at a reduced serial port speed.  However,
+after running the MS-DOS version of the program one must first close the
+"MS-DOS window" (to release the serial port) before switching back to
+using the Windows version of "photopc".
+
+<h3>Time Zones</h3>
+
+Your camera has a real-time clock which can be set by the program.  This
+internal clock is used to time-stamp photos as they are taken.  By
+default, the program assumes that the clock in the camera is set to
+"universal time" (also known as GMT or Zulu time).  Therefore, when the
+program displays times and/or automatically creates file names using
+photo time-stamps, "universal time" is converted into "local time"
+according to your computer's "time zone" setting.
+
+If you want to set your camera's internal clock to "local time", and
+<em>not</em> have the software apply a "time zone correction", then add
+the "no time zone" switch to the program's command line, as follows:
+
+<pre>  photopc -z ... </pre>
+
+Under the MS-DOS operating system, the time zone is set using the "TZ"
+environment variable.  The TZ environment variable can be set with the
+following MS-DOS command:
+
+<pre>  set TZ=zzz[+/-]d[d][lll]</pre>
+
+where "zzz" is a required three-character string with the name of the
+current time zone, "[+/-]d[d]" is a required field with an optionally
+signed number of one or two digits specifying the local time zone's
+difference from GMT in hours, and "lll"is an optional three-character
+field with the name of the local time zone during daylight savings time.
+This command should be placed in your AUTOEXEC.BAT file.  For example,
+the following command sets the time zone to Pacific Time:
+
+<pre>  set TZ=PST8PDT</pre>
+
+<p>Under MS-DOS, if the TZ environment variable is <em>not</em> set the
+program will <em>not</em> apply a time zone correction, giving the same
+program behavior as with the "-z" command line switch. Under MS-DOS, if
+the TZ variable is set, but does not satisfy the above described syntax,
+the time zone correction is undefined (i.e., probably wrong).
+
+<p>Under Windows, unless the "-z" command line switch is set, the
+program always will apply a time zone correction, as defined by the time
+zone setting in the Windows operating system.  However, if the TZ
+variable <em>is</em> set (using to the above described syntax), then it
+overrides the Windows time zone setting, and the program will apply a
+time zone correction as defined by the TZ variable.  Beware that if the
+TZ variable is set under Windows, but does not satisfy the above
+described syntax, the time zone correction is undefined (i.e., probably
+wrong).
+
+<h3>Software Revision Level</h3>
+
+You can determine the revision level of the program by using the
+following command:
+
+<pre>  photopc -V </pre>
+
+Please include this information when reporting program bugs.
+
+<h2>Software License</h2>
+
+<p>This software is copyright &copy;1997, 1998 by Eugene G. Crosser.
+Microsoft Windows and MS-DOS support is copyright &copy;1997, 1998, 1999 by
+Bruce D. Lightner.
+
+<p> You may distribute and/or use for any purpose modified or unmodified
+copies of this software if you preserve the copyright notice above.
+ 
+<p>THIS SOFTWARE IS PROVIDED AS IS AND COME WITH NO WARRANTY OF ANY
+KIND, EITHER EXPRESSED OR IMPLIED.  IN NO EVENT WILL THE
+COPYRIGHT HOLDERS BE LIABLE FOR ANY DAMAGES RESULTING FROM THE
+USE OF THIS SOFTWARE.
+
+<p>Trademarks referenced herein are those of their respective owners.
+
+<HR>
+<FONT SIZE=-1><I>
+<A HREF="http://www.lightner.net/lightner/bruce.html">Bruce D. Lightner</A>,
+$Id: usage.htm,v 2.7 1999/03/22 06:55:47 lightner Exp crosser $
+</I></FONT>
+
+</body>
+</html>
+

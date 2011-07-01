@@ -1,0 +1,197 @@
+#	$Id: makefile.win,v 2.12 1999/03/22 06:08:44 lightner Exp crosser $
+#
+#	Copyright (c) 1997,1998 Eugene G. Crosser
+#	Copyright (c) 1998 Bruce D. Lightner (DOS/Windows support)
+#
+#	You may distribute and/or use for any purpose modified or unmodified
+#	copies of this software if you preserve the copyright notice above.
+#
+#	THIS SOFTWARE IS PROVIDED AS IS AND COME WITH NO WARRANTY OF ANY
+#	KIND, EITHER EXPRESSED OR IMPLIED.  IN NO EVENT WILL THE
+#	COPYRIGHT HOLDER BE LIABLE FOR ANY DAMAGES RESULTING FROM THE
+#	USE OF THIS SOFTWARE.
+#
+#	$Log: makefile.win,v $
+#	Revision 2.12  1999/03/22 06:08:44  lightner
+#	Add -DHAVE_RENAME
+#	Fix overly long command line problem (add $(EXTRA_OBJS))
+#	Fix "make clean" to do full cleanup
+#
+#	Revision 2.11  1999/03/12 23:22:30  crosser
+#	define for new utime() code
+#
+#	Revision 2.10  1999/03/12 10:06:23  crosser
+#	setfiletime
+#
+#	Revision 2.9  1999/03/10 22:34:43  crosser
+#	sync with structure changes
+#
+#	Revision 2.8  1999/01/17 13:37:29  crosser
+#	fix copyright info
+#
+#	Revision 2.7  1999/01/17 13:27:59  bruce
+#	make win/dos versions in separate subdirs
+#
+#	Revision 2.6  1998/10/18 13:18:27  crosser
+#	Put RCS logs and I.D. into the source
+#
+#	Revision 2.5  1998/02/16 06:12:02  lightner
+#	Add dependancy for revision.h
+#	
+#	Revision 2.4  1998/02/08 19:58:38  crosser
+#	Support low memory: chunked saving etc.
+#	
+#	Revision 2.3  1998/02/05 23:33:00  lightner
+#	Fix make logic to allow debug
+#	Fix "make clean" logic to remove MSVC++ "trash/debug" files
+#	
+#	Revision 2.2  1998/01/18 02:16:45  crosser
+#	DOS support
+#	HAVE_NANOSLEEP
+#	
+#	Revision 2.1  1998/01/03 12:50:02  crosser
+#	fix for new name etc.
+#	
+#	Revision 2.0  1998/01/02 19:20:11  crosser
+#	Added support for Win32
+#	
+#	Revision 1.1  1998/01/02 00:49:34  crosser
+#	Initial revision
+#
+# Modified by Bruce D. Lightner (lightner@lightner.net) on 1/2/98 to
+# support builds under Microsoft Windows 95/NT
+#
+# To "make" using Microsoft's Visual C++ toolset, ensure that your
+# PATH points to the proper development tools directory, verify that
+# the INCLUDE and LIB environment variables are set, then enter the
+# following commands:
+#
+#      nmake -f Makefile.win gclean
+#      nmake -f Makefile.win
+#
+# Executables and library file will be built in the directory .\win32
+
+# -DUNIX
+# Use UNIX specific I/O and other things.
+
+# -DDOS
+# Use DOS-specific I/O and other things.
+
+# -DMSWINDOWS
+# Use Windows-specific I/O and other things.
+
+# -DLOWMEMORY
+# Try to work even if the whole image dill not fit in addressable
+# memory (e.g DOS or XENIX/286)
+
+# -DINT16=<type-for-16bit-integer>
+# Here you need to specify which integer type correspond to 16bit word.
+# On Intel x86 and SPARC it is `short' and I think it is the same on
+# most reasonable architectures.  But if you have anything really exotic,
+# watch out!
+
+# -DHAVE_STRFTIME
+# use strftime(3) to make file names with format given in -f option
+
+# This one is good for Windows95:
+OPTS	= -DMSWINDOWS -DINT16=short -DHAVE_STRFTIME -DHAVE_SYS_TIME_H \
+	-DTIME_WITH_SYS_TIME=0 -DHAVE_SYS_TIME_H=0 -DHAVE_SYS_UTIME_H=1 \
+        -DHAVE_RENAME
+
+CC	= cl
+#CFLAGS	= -O2 -Zi
+CFLAGS	= -O2
+LD	= cl
+LDFLAGS	= $(CFLAGS)
+AR	= lib
+
+INC = -I.
+
+# target directory for objects, executables, and libraries
+T = win32
+
+##### No need to touch anything below this line #####
+
+LIBOBJS = $(T)/eph_read.obj $(T)/eph_iob.obj $(T)/eph_err.obj \
+	$(T)/eph_cmd.obj $(T)/eph_io.obj $(T)/eph_open.obj
+
+EXTRA_OBJS = $(T)/getopt.obj $(T)/usleep.obj $(T)/strcscmp.obj \
+	$(T)/a12scan.obj $(T)/fnames.obj $(T)/ctimez.obj $(T)/filetime.obj \
+	$(T)/exifscan.obj
+
+.c{$T/}.obj:
+	$(CPP) $(CFLAGS) $(OPTS) $(INC) -Fo$@ -c $<
+
+
+all:  $(T) $(T)/eph_io.lib $(T)/photopc.exe $(T)/epinfo.exe
+
+$(T):
+	mkdir $@
+
+$(T)/eph_io.lib:      $(LIBOBJS)
+	$(AR) /out:$@ $(LIBOBJS)
+
+$(T)/photopc.exe:     $(T)/photopc.obj $(EXTRA_OBJS) $(T)/eph_io.lib
+	$(LD) $(LDFLAGS) -Fe$@ $(T)/photopc.obj $(EXTRA_OBJS) $(T)/eph_io.lib
+
+$(T)/epinfo.exe:      $(T)/epinfo.obj $(EXTRA_OBJS)
+	$(LD) $(LDFLAGS) -Fe$@ $(T)/epinfo.obj $(EXTRA_OBJS) /link setargv.obj
+
+
+tidyup:
+	del $(T)\*.obj
+	del $(T)\vc*.pdb
+	del $(T)\eph_io.bak
+	del $(T)\photopc.vcp
+	del $(T)\photopc.ilk
+	del $(T)\photopc.pdb
+	del $(T)\epinfo.vcp
+	del $(T)\epinfo.ilk
+	del $(T)\epinfo.pdb
+
+clean:	tidyup
+	del $(T)\eph_io.lib
+	del $(T)\photopc.exe
+	del $(T)\epinfo.exe
+
+$(T)/eph_cmd.obj: eph_io.h
+$(T)/eph_cmd.obj: eph_priv.h
+$(T)/eph_err.obj: eph_io.h
+$(T)/eph_err.obj: eph_priv.h
+$(T)/eph_io.obj: eph_io.h
+$(T)/eph_io.obj: eph_priv.h
+$(T)/eph_io.obj: usleep.h
+$(T)/eph_io.obj: comio.h
+$(T)/eph_iob.obj: eph_io.h
+$(T)/eph_open.obj: eph_io.h
+$(T)/eph_open.obj: eph_priv.h
+$(T)/eph_open.obj: usleep.h
+$(T)/eph_open.obj: comio.h
+$(T)/eph_open.obj: usleep.h
+$(T)/eph_read.obj: eph_io.h
+$(T)/eph_read.obj: comio.h
+$(T)/eph_read.obj: usleep.h
+$(T)/epinfo.obj: a12scan.h
+$(T)/epinfo.obj: exifscan.h
+$(T)/epinfo.obj: fnames.h
+$(T)/epinfo.obj: ctimez.h
+$(T)/epinfo.obj: filetime.h
+$(T)/epinfo.obj: getopt.h
+$(T)/epinfo.obj: strcscmp.h
+$(T)/epinfo.obj: revision.h
+$(T)/getopt.obj: getopt.h
+$(T)/a12scan.obj: a12scan.h
+$(T)/exifscan.obj: exifscan.h
+$(T)/fnames.obj: fnames.h
+$(T)/fnames.obj: ctimez.h
+$(T)/ctimez.obj: ctimez.h
+$(T)/filetime.obj: filetime.h
+$(T)/filetime.obj: ctimez.h
+$(T)/photopc.obj: eph_io.h
+$(T)/photopc.obj: a12scan.h
+$(T)/photopc.obj: fnames.h
+$(T)/photopc.obj: ctimez.h
+$(T)/photopc.obj: filetime.h
+$(T)/photopc.obj: getopt.h
+$(T)/photopc.obj: strcscmp.h
+$(T)/photopc.obj: revision.h

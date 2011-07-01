@@ -1,0 +1,36 @@
+HKCR
+{
+	ImageUploadCtrl.ImageUpload.1 = s 'ImageUpload Class'
+	{
+		CLSID = s '{652FE09F-3289-414A-B1D7-2E661FA6119B}'
+		'Insertable'
+	}
+	ImageUploadCtrl.ImageUpload = s 'ImageUpload Class'
+	{
+		CLSID = s '{652FE09F-3289-414A-B1D7-2E661FA6119B}'
+		CurVer = s 'ImageUploadCtrl.ImageUpload.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {652FE09F-3289-414A-B1D7-2E661FA6119B} = s 'ImageUpload Class'
+		{
+			ProgID = s 'ImageUploadCtrl.ImageUpload.1'
+			VersionIndependentProgID = s 'ImageUploadCtrl.ImageUpload'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 102'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '%OLEMISC%'
+			}
+			'TypeLib' = s '{282CF87D-14E9-4146-8397-618EBC816DC9}'
+			'Version' = s '1.0'
+		}
+	}
+}

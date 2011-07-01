@@ -1,0 +1,452 @@
+.\"	$Id: photopc.man,v 2.24 1999/03/21 20:22:09 crosser Exp crosser $
+.\"
+.\"	Copyright (c) 1997-1999 Eugene G. Crosser
+.\"	Copyright (c) 1998,1999 Bruce D. Lightner (DOS/Windows support)
+.\"
+.\"	You may distribute and/or use for any purpose modified or unmodified
+.\"	copies of this software if you preserve the copyright notice above.
+.\"
+.\"	THIS SOFTWARE IS PROVIDED AS IS AND COME WITH NO WARRANTY OF ANY
+.\"	KIND, EITHER EXPRESSED OR IMPLIED.  IN NO EVENT WILL THE
+.\"	COPYRIGHT HOLDER BE LIABLE FOR ANY DAMAGES RESULTING FROM THE
+.\"	USE OF THIS SOFTWARE.
+.\"
+.\"	$Log: photopc.man,v $
+.\"	Revision 2.24  1999/03/21 20:22:09  crosser
+.\"	sync format desc with actual program
+.\"
+.\"	Revision 2.23  1999/03/13 13:10:13  crosser
+.\"	reflect 3.00 changes
+.\"
+.\"	Revision 2.22  1999/02/28 22:40:48  crosser
+.\"	suggest audio compression is adpcm
+.\"
+.\"	Revision 2.21  1999/02/26 23:54:42  crosser
+.\"	Correct JFIF vs. Exif vs. JPEG things
+.\"
+.\"	Revision 2.20  1999/01/17 14:16:50  crosser
+.\"	copyright years
+.\"
+.\"	Revision 2.19  1999/01/17 13:37:29  crosser
+.\"	fix copyright info
+.\"
+.\"	Revision 2.18  1998/12/20 21:58:58  crosser
+.\"	Add audio command
+.\"
+.\"	Revision 2.17  1998/12/06 08:40:34  crosser
+.\"	more comapibility things
+.\"
+.\"	Revision 2.16  1998/11/20 22:49:46  crosser
+.\"	mention problems with CP900
+.\"
+.\"	Revision 2.15  1998/11/20 22:34:10  crosser
+.\"	elaborate on list vs. llist
+.\"
+.\"	Revision 2.14  1998/10/18 19:07:36  crosser
+.\"	renamed "list" to "llist", make new "list" that works on all models.
+.\"
+.\"	Revision 2.13  1998/10/18 13:18:27  crosser
+.\"	Put RCS logs and I.D. into the source
+.\"
+.\"	Revision 2.12  1998/08/08 22:16:33  crosser
+.\"	reflect timezone related things
+.\"	
+.\"	Revision 2.11  1998/08/08 14:00:33  crosser
+.\"	unimportant changes
+.\"	
+.\"	Revision 2.10  1998/07/21 22:56:52  crosser
+.\"	fix CP 900
+.\"	
+.\"	Revision 2.9  1998/06/07 18:41:40  crosser
+.\"	frame intervals, digital zoom
+.\"	
+.\"	Revision 2.8  1998/06/07 13:55:20  crosser
+.\"	compatibilities and credits
+.\"	
+.\"	Revision 2.7  1998/03/01 18:57:04  crosser
+.\"	preview command
+.\"	
+.\"	Revision 2.6  1998/02/16 06:14:29  lightner
+.\"	Add docs for -V and -z options
+.\"	
+.\"	Revision 2.5  1998/02/13 23:02:40  crosser
+.\"	Point that upload does not work on LOWMEMORY model
+.\"	
+.\"	Revision 2.4  1998/01/27 21:52:55  crosser
+.\"	upload command
+.\"	
+.\"	Revision 2.3  1998/01/18 02:24:31  crosser
+.\"	change copyright
+.\"	
+.\"	Revision 2.2  1998/01/11 21:20:54  crosser
+.\"	off command
+.\"	
+.\"	Revision 2.1  1998/01/04 13:55:57  crosser
+.\"	New commands: protect, list
+.\"	
+.\"	Revision 2.0  1998/01/03 19:54:26  crosser
+.\"	Windows support
+.\"	locktoggle command
+.\"	new -f variants
+.\"	
+.\"	Revision 1.2  1997/12/24 00:19:13  crosser
+.\"	describe new commands
+.\"	claim that we work with other digital cameras (do we really?)
+.\"	
+.\"	Revision 1.1  1997/08/17 08:59:54  crosser
+.\"	Initial revision
+.\"	
+.TH PHOTOPC 1 "24 May 1997" "PhotoPC manipulation tool" "User Commands"
+.SH NAME
+
+photopc \- utility to control digital cameras based on Sierra Imaging firmware
+
+.SH SYNOPSIS
+
+photopc [-h] [-V] [-v[v]] [-q] [-z] [-t] [-f timeformat] [-s <speed>] [-l <device>] [command [params] ] ...
+
+.SH DESCRIPTION
+
+This is a command line tool to manipulate digital still cameras that use
+certain control protocol, namely Agfa ePhoto line, Epson PhotoPC line,
+Olympus D-xxxL line, Sanyo and Nikon (at least CoolPix 900) cameras.  It
+can set camera parameters, download and erase pictures, e.t.c.  It was
+originally developed for Epson PhotoPC 500, now the author uses it with
+Olympus D-600L, results with other models may vary.
+
+.PP
+.SH "OPTIONS"
+
+.TP 0.5i
+.B -h
+This option produces a help screen of all options and commands.
+
+.TP 0.5i
+.B -V
+This option prints software revision information.
+
+.TP 0.5i
+.B -v
+This option enables verbose output. Using two -v options increases the
+level of verbosity. This is primarily meant for debugging.
+
+.TP 0.5i
+.B -q
+This option sets quite mode.  If it is not specified, the program will
+show running download progress indicator.
+
+.TP 0.5i
+.B -z
+This option sets no time-zone processing mode.  Use this option if the
+camera's clock is (should be) set up shifted by the local timezone
+offset.
+
+.TP 0.5i
+.B -s speed
+This option allows setting the data rate to use when communicating with
+the camera.  Valid rates are 9600, 19200, 38400, 57600 and 115200 (the
+default).
+
+.TP 0.5i
+.B -t
+Set timestamp of generated files to the time of snapshot.
+
+.TP 0.5i
+.B -f timeformat
+This option allows to specify the format for automatically generated
+image file names; the value is used as the format string for strftime(3)
+function.  By default, names of the format "MMDD_NNN.jpg" are generated,
+where MM is a month, DD is a day, and NNN is a count starting from 001.
+A good starting point for the timeformat value could be
+"%Y_%m_%d-%H_%M_%S.jpg".  If the format string contains context "%%XXXd"
+where XXX are digits, it is taken for the count, i.e. if the file with
+such name is present, next count is tried.  If the format string does
+not contain "%%XXXd" part, the count field, if necessary, is appended at
+the end of the name.
+
+A few single-character formats are used as shortcuts.  "x" makes the
+name of seconds since the epoch in hexadecimal format (8 characters +
+".jpg"), "d" - the same in decimal format (10 characters), "1" stands
+for default format "%m%d_%%03d.jpg", "2" stands for "%y%m%d%%02d.jpg",
+"3" stands for "%Y_%m_%d-%H_%M_%S.jpg" and 4 stands for
+"%Y/%m/%d/%H_%M_%S.jpg".  The program attempts to create intermediate
+directories is necessary (and possible).
+
+.TP 0.5i
+.B -l device
+This allows specifying the serial device to use for communicating with
+the camera. The default is
+.I /dev/photopc
+(which is typically created as
+a (symbolic) link to the real device, e.g. /dev/ttyS0) in UNIX, and
+.I COM1:
+in DOS and Windows.
+
+.SH COMMANDS
+
+After the options, one or more commands can be given on the command line.
+
+Some commands accept
+.B frame-list
+as a parameter.  Frame list is a comma-separated list of tokens (no
+whitespace allowed), each of the tokens being a word
+.B all
+, or a single number, or two numbers separated by a dash (-),
+or a number followed by a dash and a word
+.B last
+(without whitespace).
+
+.TP 0.5i
+.B query
+Display all current camera settings.
+
+.TP 0.5i
+.B count
+Output the number of pictures stored in the camera.  This is intended
+for use in shell scripts.
+
+.TP 0.5i
+.B list
+List information about frames stored in the camera.  Fields displayed
+are: frame number, size of image file, protection state, resolution
+mode and timestamp.  Faster than
+.B llist
+but may not work with some (older) models.
+
+.TP 0.5i
+.B llist
+List more information about frames stored in the camera.  Fields
+displayed are: frame number, protection state, size of image file,
+resolution mode, flash, shutter and timestamp.  Slower than
+.B list
+and does not work with models that use
+.I Exif
+file format.
+
+.TP 0.5i
+.B protect <frame-list> On | Off
+Change "protected" status of frames. Frame numbering starts at 1. The
+command will fail if the frame number is omitted, not numeric, or does
+not correspond to a stored frame.  "Protected" frames cannot be erased
+with "erase" and "eraseall" commands or with the "erase" button on the
+camera.
+
+.TP 0.5i
+.B erase <frame-list>
+Erase frames. Frame numbering starts at 1. The command will fail if the
+frame number is omitted, not numeric, or does not correspond to a stored
+frame.
+
+.B WARNING!
+note that erasing list may not give expected result.  As frames are
+erased, subsequent frames change their numbers.  For example, if you had
+three frames, and run "erase 1-2", you will have one frame left that was
+originally frame no. 2, frames no. 1 and 3 will be deleted.  To be sure,
+always specify frames in descending order, e.g "erase 5,2-1".
+
+.TP 0.5i
+.B eraseall
+Erase all stored frames.
+
+.TP 0.5i
+.B snapshot
+Take a picture.
+
+.TP 0.5i
+.B off
+Switch off the camera.  This command only has this effect on some models
+(notably Olympus D-600L).  On other models, it just terminate the
+session immediately (otherwise the camera would be active several
+seconds after the last command).  On models with big timeout, such as
+Photopc 600, it may be wise to always issue "off" at the end of command
+row, to decrease power consumption.
+
+All commands going after "off" are ignored.
+
+.TP 0.5i
+.B image <frame-list> <file-or-dir-name>
+Download an image or series of images from the camera to disk file(s) on
+the host computer.  Frame numbering starts at 1. The command will fail
+if the frame number is omitted, not numeric, or does not correspond to a
+stored frame.  Files are stored in JPEG (JFIF or Exif) format.  Image
+file also contains a thumbnail portion, and set of parameters like the
+shutter speed, date and time, I.D. string and more.  Directory must be
+specified if frame list is requested.  If directory name is specified,
+downloaded file(s) will get unique names starting with month and date of
+snapshot, unless -f option is used, in which case unique names are
+created according to the format specified.
+
+.TP 0.5i
+.B thumbnail <frame-list> <file-or-dir-name>
+Download a thumbnail image or series of thumbnails from the camera to
+disk file(s) on the host computer. Frame numbering starts at 1. The
+command will fail if the frame number is omitted, not numeric, or does
+not correspond to a stored frame. Files are stored in JPEG (JFIF or Exif)
+format.  If the camera does not keep files in
+.I EXIF
+format, then the thumbnail file also contains a set of parameters like
+the shutter speed, date and time, I.D.  string and more.  Directory must
+be specified if frame list is requested.  If directory name is
+specified, downloaded file(s) will get unique names starting with month
+and date of snapshot, unless -f option is used.
+
+.TP 0.5i
+.B audio <frame-list> <file-or-dir-name>
+Download an audio notice file or series of files from the camera to disk
+file(s) on the host computer. Frame numbering starts at 1. The command
+will fail if the frame number is omitted, not numeric, or does not
+correspond to a stored frame. Files are stored with ".wav" extention but
+the format is
+.I not
+RIFF WAV format.  It is compressed in some way, probably some variation
+of ADPCM.  The program stores the raw data as provided by the camera, it
+is not playable as a normal
+.I .wav
+file.  Directory must be specified if frame list is requested.  If
+directory name is specified, downloaded file(s) will get unique names
+starting with month and date of snapshot, unless -f option is used.
+
+.TP 0.5i
+.B preview <file-name>
+take a `preview' snapshot and save image as a <file-name>.  File is in
+JPEG (JFIF or Exif) format, and does not contain any additional data,
+just plain (very low resolution) image.
+
+.TP 0.5i
+.B upload <file-name>
+Upload image file into the camera.  This command is not enabled in
+LOWMEMORY version (i.e. under MS/DOS).
+
+.B WARNING!
+You cannot upload arbitrary JPEG file.  Depending on the camera model,
+such attempt may result in the image not uploaded, not viewable, or even
+the camera "hung" needing to remove the batteries to make it work again.
+File previously downloaded from the same camera model is always uploadable.
+Otherwise, your milage may vary.
+.B photopc
+program does not perform any checks, so it's up to the user to provide
+the file in proper format.
+
+.TP 0.5i
+.B resolution Hi | Lo | Ext | <number>
+Set the camera to high, low or extended resolution mode.  Exact meaning
+of the modes is model-dependant and may specify different image
+dimensions and/or JPEG compression rate.
+
+.TP 0.5i
+.B clock
+Set the camera's internal real-time clock using the current date and
+time from the host computer.  Time of taking a snapshot is included
+inside the JPEG files produced.  Note that the models which display
+the time on the LCD will then display GMT rather than local time.
+With
+.B -z
+option, time shifted by the timezone offset is set, and the LCD will
+display local time.  Using unshifted (GMT) time in the camera seems a
+proper way to go.
+
+.TP 0.5i
+.B shutter <speed>
+Set the camera shutter speed.  Units can be specified in microseconds or
+in traditional form like "1/250".  Valid interval depends on the model.
+If a value outside the interval is specified, the camera will set the
+speed to the nearest margin of the valid interval.  Special speed value
+.B auto
+will set automatic shutter.  Note that this only works while the camera
+is connected to the host, and automatically turns the flash off.  While
+disconnected, shutter speed is always set automatically.  Also note that
+there is no known way to control the aperture value from the host.
+
+.TP 0.5i
+.B flash Auto | Force | Off | AntiRedeye | SlowSync
+Set the camera flash mode.
+
+.TP 0.5i
+.B id <string>
+Set the camera identifier string that is included inside the JPEG files
+produced.  Only few models support this.
+
+.TP 0.5i
+.B autoshut-host <seconds>
+Automatically shut off the camera after that many seconds of inactivity
+while connected to the computer (on the host).
+
+.TP 0.5i
+.B autoshut-field <seconds>
+Automatically shut off the camera after that many seconds of inactivity
+while disconnected from the computer (in the field).
+
+.TP 0.5i
+.B lcd-autoshut <seconds>
+Automatically shut off the LCD monitor after that many seconds of inactivity.
+
+.TP 0.5i
+.B lcd-brightness <value>
+Set LCD brightness to the value (valid values are 1 to 7).
+
+.TP 0.5i
+.B macro On | Off
+Set the lens macro mode.  As far as I can tell, on fixed focus models
+macro only means force minimum aperture, not change the focal length.
+Only has effect in the same invocation with "snapshot" command.
+
+.TP 0.5i
+.B color On | Off
+Set color or B/W mode.
+
+.TP 0.5i
+.B dzoom On | Off
+Set digital zoom on or off.  Note that low resolution must be set prior
+to turning on digital zoom.  Only has effect in the same invocation with
+"snapshot" command.
+
+.SH EXAMPLES
+
+% photopc query
+
+% photopc -f "image%H:%M:%S" eraseall snapshot image 1 .
+
+.SH OTHER NOTES
+
+The latest version of this tool can be found at
+ftp://ftp.average.org/pub/photopc/; see also WWW page at
+http://www.average.org/digicam/.
+
+Trademarks are properties of their respective owners.
+
+.SH KNOWN BUGS
+
+On some models, powersaving timeouts are measured not in seconds but in
+1/10 sec units.  The program reports them as in seconds.
+
+Llist command relies on the format of thumbnail image that does not
+contain necessary information on some models (e.g. Nikon CP 900), this
+command does not work for these models.  List command, on the contrary,
+do not display useful data on models that do not return it in the
+register 47 (e.g. Agfa 780).
+
+The program is known to have some timing problems talking to Nikon CP900
+when the camera is "napping" in powersaving mode.  Until the problem is
+solved, a workaround is to run the program this way:
+
+.B $ photopc && photopc
+.I <command list>
+
+.SH COPYRIGHT
+
+The program is copyrighted by Eugene G. Crosser <crosser@average.org>
+and freely distributable.  See README file for detailes.  DOS and
+Windows support copyright Bruce D. Lightner <lightner@lightner.net>
+
+.SH CREDITS
+
+The man page was originally written by Jeff Tranter
+<jeff_tranter@pobox.com>, who also contributed a few bugfixes.  Some
+information about the serial protocol obtained from Jun-ichiro "itojun"
+Itoh <itojun@itojun.org>, Thierry Bousch
+<bousch%linotte.uucp@topo.math.u-psud.fr> and other contributors.
+
+.SH SEE ALSO
+
+epinfo(1), strftime(3), protocol description (protocol.htm in the source
+distribution).

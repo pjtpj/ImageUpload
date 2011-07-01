@@ -1,0 +1,9 @@
+; ImageUploadCtrl.def : Declares the module parameters.
+
+LIBRARY      "ImageUploadCtrl.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE
